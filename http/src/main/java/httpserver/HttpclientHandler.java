@@ -8,17 +8,21 @@ import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 public class HttpclientHandler implements Runnable
 {
     private final Socket socket;
     private int id;
-    private String inputFile;
+    private String arguments;
+    
 
 
-    public HttpclientHandler(Socket socket, int id, String inputFile) {
+    public HttpclientHandler(Socket socket, int id, String arguments) {
         this.socket = socket;
         this.id = id;
-        this.inputFile = inputFile;
+        this.arguments = arguments;
+        
+        
     }
 
     @Override
@@ -40,11 +44,9 @@ public class HttpclientHandler implements Runnable
         while (!"close".equals(line) && null != line) {
 
             System.out.println("Client " + id + ": " + line);
-            
-            
+           
             try {
 
-            
                 if ("--port".equals(line)){
                    
                     out.println("Port: 3000");
@@ -69,10 +71,50 @@ public class HttpclientHandler implements Runnable
                 e.printStackTrace();
                 break;
             } 
+   
         }
+
+        String[] strArray = arguments.trim().split(",");
+        
+            
+        try {
+            while (!arguments.contains("GET"))
+                out.println("HTTP/1.1 405 Method Not Allowed\r\n\r\n" + strArray[0]+ " not supported\r\n");
+                out.flush();
+            socket.close();
+           
+        } catch (IOException e) {
+            e.printStackTrace();
+         
+        }
+        
+        try {
+            while ("GET".equals(strArray[0]) && !arguments.contains("index.html"))
+                out.println("HTTP/1.1 404 Not Found\r\n\r\n" + strArray[1]+ " not found\r\n");
+                out.flush();
+            socket.close();
+           
+        } catch (IOException e) {
+            e.printStackTrace();
+          
+        }
+        
+        try {
+            while ("GET".equals(strArray[0]) && !arguments.contains("index.html"))
+                out.println("HTTP/1.1 404 Not Found\r\n\r\n" + strArray[1]+ " not found\r\n");
+                out.flush();
+            socket.close();
+           
+        } catch (IOException e) {
+            e.printStackTrace();
+          
+        }
+
     }
+    
 
-
-
+    
+        
+    
     
 }
