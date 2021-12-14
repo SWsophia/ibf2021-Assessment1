@@ -71,44 +71,46 @@ public class HttpclientHandler implements Runnable
                 e.printStackTrace();
                 break;
             } 
+
+            String[] strArray = arguments.trim().split(".");
+        
+            
+            try {
+                while (!arguments.contains("GET"))
+                    out.println("HTTP/1.1 405 Method Not Allowed\r\n\r\n" + strArray[0]+ " not supported\r\n");
+                    out.flush();
+                socket.close();
+               
+            } catch (IOException e) {
+                e.printStackTrace();
+             
+            }
+            
+            try {
+                while (arguments.contains("GET") && !arguments.contains("index.html"))
+                    out.println("HTTP/1.1 404 Not Found\r\n\r\n" + strArray[1]+ " not found\r\n");
+                    out.flush();
+                socket.close();
+               
+            } catch (IOException e) {
+                e.printStackTrace();
+              
+            }
+            
+            try {
+                while (arguments.contains("GET") && arguments.contains("index.html") &&  !arguments.contains(".png"))
+                    out.println("HTTP/1.1  200 OK\r\n\r\n");
+                    out.flush();
+                socket.close();
+               
+            } catch (IOException e) {
+                e.printStackTrace();
+              
+            }
    
         }
 
-        String[] strArray = arguments.trim().split(",");
-        
-            
-        try {
-            while (!arguments.contains("GET"))
-                out.println("HTTP/1.1 405 Method Not Allowed\r\n\r\n" + strArray[0]+ " not supported\r\n");
-                out.flush();
-            socket.close();
-           
-        } catch (IOException e) {
-            e.printStackTrace();
-         
-        }
-        
-        try {
-            while ("GET".equals(strArray[0]) && !arguments.contains("index.html"))
-                out.println("HTTP/1.1 404 Not Found\r\n\r\n" + strArray[1]+ " not found\r\n");
-                out.flush();
-            socket.close();
-           
-        } catch (IOException e) {
-            e.printStackTrace();
-          
-        }
-        
-        try {
-            while ("GET".equals(strArray[0]) && !arguments.contains("index.html"))
-                out.println("HTTP/1.1 404 Not Found\r\n\r\n" + strArray[1]+ " not found\r\n");
-                out.flush();
-            socket.close();
-           
-        } catch (IOException e) {
-            e.printStackTrace();
-          
-        }
+       
 
     }
     
