@@ -1,0 +1,17 @@
+body{
+    background-color: bisque;
+}
+div{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+img{
+    display: block;
+    height: 50vh;
+    border: 1px solid rgb(25, 117, 63);
+    padding: 10px;
+    margin-left: 3vw;
+}
